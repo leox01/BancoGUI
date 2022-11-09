@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"controlador","l":"Controlador"},{"p":"modelo","l":"Cuenta"},{"p":"modelo","l":"CuentaAhorro"},{"p":"modelo","l":"CuentaCredito"},{"p":"modelo","l":"CuentaInversion"},{"p":"vista","l":"Menu"},{"p":"controlador","l":"Test"},{"p":"vista","l":"VentanaEditar"}];updateSearchResults();

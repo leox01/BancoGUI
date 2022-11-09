@@ -66,7 +66,7 @@ public class Controlador {
      * @return retorna el objeto CuentaAhorro con los datos de la cuenta buscada o retorna un objeto con -1 cuando no 
      * encuentra una cuenta con ese numero de cuenta buscado
      */
-    public CuentaAhorro buscarCuentaAhorro(int numeroCuentaBuscada){
+    public static CuentaAhorro buscarCuentaAhorro(int numeroCuentaBuscada){
     
         for (CuentaAhorro cuentaAhorro : cuentasAhorros) {
             if(cuentaAhorro.getNumeroCuenta() == numeroCuentaBuscada)
@@ -82,7 +82,7 @@ public class Controlador {
      * Este método nos va a regresar todo el arrayList de cuentas de ahorro
      * @return El arrayList completo de cuentasAhorros
      */
-    public ArrayList<CuentaAhorro> getTodasLasCuentasDeAhorros(){
+    public static ArrayList<CuentaAhorro> getTodasLasCuentasDeAhorros(){
         return cuentasAhorros;
     }
     

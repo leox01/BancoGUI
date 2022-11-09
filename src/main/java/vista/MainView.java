@@ -5,17 +5,25 @@
 
 package vista;
 
+import java.util.ArrayList;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import modelo.CuentaAhorro;
+
 /**
  *
  * @author leopoldomorales
  */
 public class MainView extends javax.swing.JFrame {
     
+    public static int indexRow = -1;
+    
     public static boolean botonesActivos=true;
 
     /** Creates new form MainView */
     public MainView() {
         initComponents();
+        
     }
 
     /** This method is called from within the constructor to
@@ -54,6 +62,11 @@ public class MainView extends javax.swing.JFrame {
                 "Tipo de Cuenta", "Numero de Cuenta", "Nombre", "Dirección", "Teléfono", "E-mail", "Saldo"
             }
         ));
+        myTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                myTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(myTable);
 
         registrarButton.setText("Registrar");
@@ -127,15 +140,56 @@ public class MainView extends javax.swing.JFrame {
     }//GEN-LAST:event_registrarButtonActionPerformed
 
     private void editarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarButtonActionPerformed
-       new RegistrarView("Editar").setVisible(true);
-       botonesActivos = false;
-       actualizarBotones();
+       
+        System.out.println("Editar presionado" +indexRow);
+        
+        
+        if(indexRow!=-1){
+            
+            String numeroCuentaString = myTable.getValueAt(indexRow, 1).toString();
+           
+            try {
+                int numeroCuentaInt = Integer.parseInt(numeroCuentaString);
+                
+                
+                CuentaAhorro cuentaAhorro = controlador.Controlador.buscarCuentaAhorro(numeroCuentaInt);
+                
+               
+                if(cuentaAhorro.getNumeroCuenta()!=-1){
+                    RegistrarView registrarView = new RegistrarView("Editar");
+                    registrarView.cuentaAhorro = cuentaAhorro;
+                    registrarView.setVisible(true);
+                    botonesActivos = false;
+                    actualizarBotones();
+                
+                }else{
+                    System.out.println("No existe esa cuenta" + cuentaAhorro.getNumeroCuenta());
+                }
+                
+                
+           
+            
+            } catch (Exception e) {
+                //mostrarMensaje("Error", "Error al intentar convertir el String a int");
+            }
+        }else{
+            System.out.println("index es -1");
+        }
+        
+       
     }//GEN-LAST:event_editarButtonActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         
        actualizarBotones();
+       dibujarUsuariosEnLaTabla();
+       botonesDeLaVista(false);
     }//GEN-LAST:event_formWindowActivated
+
+    private void myTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myTableMouseClicked
+       indexRow = myTable.rowAtPoint(evt.getPoint());
+        botonesDeLaVista(true);
+    }//GEN-LAST:event_myTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -179,7 +233,7 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JButton eliminarButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton limpiarButton;
-    private javax.swing.JTable myTable;
+    private static javax.swing.JTable myTable;
     private javax.swing.JButton registrarButton;
     // End of variables declaration//GEN-END:variables
 
@@ -189,6 +243,38 @@ public class MainView extends javax.swing.JFrame {
        buscarButton.setEnabled(botonesActivos);
        editarButton.setEnabled(botonesActivos);
        eliminarButton.setEnabled(botonesActivos);
+    }
+    
+    public static void dibujarUsuariosEnLaTabla(){
+      
+       
+        DefaultTableModel tableModel = (DefaultTableModel) myTable.getModel(); 
+        
+        tableModel.setRowCount(0); //limpiar la tabla 
+        
+        ArrayList<CuentaAhorro> cuentas = controlador.Controlador.getTodasLasCuentasDeAhorros();
+        
+        for (CuentaAhorro cuenta : cuentas) {
+            Object filaCuenta[] = new Object[7];
+            
+            filaCuenta[0] = cuenta.getTipoDeCuenta();
+            filaCuenta[1] = cuenta.getNumeroCuenta();
+            filaCuenta[2] = cuenta.getNombre();
+            filaCuenta[3] = cuenta.getDireccion();
+            filaCuenta[4] = cuenta.getTelefono();
+            filaCuenta[5] = cuenta.getEmail();
+            filaCuenta[6] = cuenta.getSaldo();
+            tableModel.addRow(filaCuenta);
+        }
+        myTable = new JTable(tableModel);
+    
+    }
+    
+    public void botonesDeLaVista(boolean estado){
+    
+        editarButton.setEnabled(estado);
+        eliminarButton.setEnabled(estado);
+    
     }
     
 }

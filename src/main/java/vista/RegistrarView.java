@@ -4,13 +4,17 @@
  */
 package vista;
 
+import java.awt.Color;
 import javax.swing.JRadioButton;
+import modelo.CuentaAhorro;
 
 /**
  *
  * @author leopoldomorales
  */
 public class RegistrarView extends javax.swing.JFrame {
+    
+    public static CuentaAhorro cuentaAhorro;
 
     public int contadorDeClicks = 0;
     
@@ -22,15 +26,17 @@ public class RegistrarView extends javax.swing.JFrame {
        
        registrarButton.setText(tituloBotonAceptar);
        
-       if(tituloBotonAceptar.equals("Editar")){
-       
-          //Realizar un comportamiento diferente a partir de el título del botón
-       }
-           
+       //Es necesario para que la vista tenga un radio button seleccionado por 
+       //defecto al cargar
+        mensajeLabel.setText(" "); 
+        desabilitarElementosDeLaVista();
+        ahorroRadioButton.setSelected(true);
     }
     
     public RegistrarView(){
+       
         initComponents();
+        
     }
 
     /**
@@ -66,9 +72,13 @@ public class RegistrarView extends javax.swing.JFrame {
         interesMoratorioTextField = new javax.swing.JTextField();
         interesInversionLabel = new javax.swing.JLabel();
         interesInversionTextField = new javax.swing.JTextField();
+        mensajeLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
@@ -129,55 +139,64 @@ public class RegistrarView extends javax.swing.JFrame {
 
         interesInversionLabel.setText("Interés inversión");
 
+        mensajeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mensajeLabel.setText("jLabel8");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cancelarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(ahorroRadioButton)
-                                .addGap(54, 54, 54)
-                                .addComponent(inversionRadioButton)
-                                .addGap(59, 59, 59)
-                                .addComponent(creditoRadioButton))
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 15, Short.MAX_VALUE))
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(interesInversionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(interesInversionTextField)
-                    .addComponent(interesMoratorioTextField)
-                    .addComponent(limiteDeCreditoTextField)
-                    .addComponent(limiteCreditoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(saldoTextField)
-                    .addComponent(emailTextField)
-                    .addComponent(telefonoTextField)
-                    .addComponent(direccionTextField)
-                    .addComponent(numeroCuentaTextField)
-                    .addComponent(nombreTextField)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(interesMoratorioLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(registrarButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cancelarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 199, Short.MAX_VALUE))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(interesInversionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(interesInversionTextField)
+                            .addComponent(interesMoratorioTextField)
+                            .addComponent(limiteDeCreditoTextField)
+                            .addComponent(limiteCreditoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(saldoTextField)
+                            .addComponent(emailTextField)
+                            .addComponent(telefonoTextField)
+                            .addComponent(direccionTextField)
+                            .addComponent(numeroCuentaTextField)
+                            .addComponent(nombreTextField)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(interesMoratorioLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(registrarButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ahorroRadioButton)
+                        .addGap(54, 54, 54)
+                        .addComponent(inversionRadioButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(creditoRadioButton)
+                        .addGap(39, 39, 39))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(mensajeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(ahorroRadioButton)
-                        .addComponent(inversionRadioButton))
+                .addComponent(mensajeLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(ahorroRadioButton)
+                    .addComponent(inversionRadioButton)
                     .addComponent(creditoRadioButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
@@ -249,6 +268,15 @@ public class RegistrarView extends javax.swing.JFrame {
        boolean ahorroSeleccionado = ahorroRadioButton.isSelected();
        boolean inversionSeleccionado = inversionRadioButton.isSelected();
        
+       
+       /*
+       
+       Es necesario primero revisar que los datos no esten vacios y que se puedan "parsear"
+       Despues debemos de revisar que tiepo de cuenta quiere registrar el usuario y mandar llamar a su
+       método.... (antes tengo que crear el método en la clase controladora
+       
+       */
+       
        if (creditoSeleccionado){
            tipoDeCuenta = "CREDITO";
        }else if ( ahorroSeleccionado){
@@ -268,14 +296,22 @@ public class RegistrarView extends javax.swing.JFrame {
             
             if(!controlador.Controlador.numeroDeCuentaRepetido(numeroCuentaInt)){
                 if(controlador.Controlador.crearCuentaDeAhorros(tipoDeCuenta, nombre,  direccion,  email,  telefono,  numeroCuentaInt,  saldoDouble)){
-                    System.out.println("Registro exitoso");
+                   
                     limpiarDatosDelaVista();
+                    mensajeLabel.setText("Usuario registrado exitosamente");
+                    mensajeLabel.setForeground(Color.BLUE);
+                    MainView.dibujarUsuariosEnLaTabla();
+                    //Hace falta que se muestre una retroalimentación en la vista para que el usuario 
+                    //sepa que ya se registró la cuenta
                 }else{
-                    System.out.println("Error al registrar");
+                   mensajeLabel.setText("Error al registrar");
+                   mensajeLabel.setForeground(Color.RED);
                 }
 
             }else{
-                System.out.println("Numero de cuenta repetido");
+                
+               mensajeLabel.setText("Numero de cuenta repetido");
+               mensajeLabel.setForeground(Color.RED);
             }  
         } catch (Exception e) {
             
@@ -308,6 +344,21 @@ public class RegistrarView extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_radioButtonActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+       
+        
+        if(registrarButton.getText().equals("Editar")){
+       
+         nombreTextField.setText(cuentaAhorro.getNombre());
+         numeroCuentaTextField.setText(cuentaAhorro.getNumeroCuenta()+"");
+         direccionTextField.setText(cuentaAhorro.getDireccion());
+         telefonoTextField.setText(cuentaAhorro.getTelefono());
+         emailTextField.setText(cuentaAhorro.getEmail());
+         saldoTextField.setText(cuentaAhorro.getSaldo()+"");
+         
+       }
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
@@ -365,6 +416,7 @@ public class RegistrarView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel limiteCreditoLabel;
     private javax.swing.JTextField limiteDeCreditoTextField;
+    private javax.swing.JLabel mensajeLabel;
     private javax.swing.JTextField nombreTextField;
     private javax.swing.JTextField numeroCuentaTextField;
     private javax.swing.JButton registrarButton;
@@ -394,5 +446,6 @@ public class RegistrarView extends javax.swing.JFrame {
         direccionTextField.setText("");
         telefonoTextField.setText("");
         desabilitarElementosDeLaVista();
+        ahorroRadioButton.setSelected(true);
     }
 }

@@ -9,6 +9,7 @@
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <Events>
+    <EventHandler event="windowActivated" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowActivated"/>
     <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
   </Events>
   <AuxValues>
@@ -26,45 +27,52 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="cancelarButton" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="cancelarButton" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel1" min="-2" pref="129" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="ahorroRadioButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
-                              <Component id="inversionRadioButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="creditoRadioButton" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel7" min="-2" pref="270" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="199" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jLabel7" alignment="0" min="-2" pref="270" max="-2" attributes="0"/>
+                          <Component id="jLabel5" alignment="1" max="32767" attributes="0"/>
+                          <Component id="jLabel4" alignment="1" max="32767" attributes="0"/>
+                          <Component id="interesInversionLabel" alignment="1" max="32767" attributes="0"/>
+                          <Component id="interesInversionTextField" alignment="1" max="32767" attributes="0"/>
+                          <Component id="interesMoratorioTextField" alignment="1" max="32767" attributes="0"/>
+                          <Component id="limiteDeCreditoTextField" alignment="1" max="32767" attributes="0"/>
+                          <Component id="limiteCreditoLabel" alignment="1" max="32767" attributes="0"/>
+                          <Component id="saldoTextField" alignment="1" max="32767" attributes="0"/>
+                          <Component id="emailTextField" alignment="1" max="32767" attributes="0"/>
+                          <Component id="telefonoTextField" alignment="1" max="32767" attributes="0"/>
+                          <Component id="direccionTextField" alignment="1" max="32767" attributes="0"/>
+                          <Component id="numeroCuentaTextField" alignment="1" max="32767" attributes="0"/>
+                          <Component id="nombreTextField" alignment="1" max="32767" attributes="0"/>
+                          <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabel3" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabel6" alignment="0" max="32767" attributes="0"/>
+                          <Component id="interesMoratorioLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="registrarButton" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="15" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jLabel5" alignment="1" max="32767" attributes="0"/>
-                  <Component id="jLabel4" alignment="1" max="32767" attributes="0"/>
-                  <Component id="interesInversionLabel" alignment="1" max="32767" attributes="0"/>
-                  <Component id="interesInversionTextField" alignment="1" max="32767" attributes="0"/>
-                  <Component id="interesMoratorioTextField" alignment="1" max="32767" attributes="0"/>
-                  <Component id="limiteDeCreditoTextField" alignment="1" max="32767" attributes="0"/>
-                  <Component id="limiteCreditoLabel" alignment="1" max="32767" attributes="0"/>
-                  <Component id="saldoTextField" alignment="1" max="32767" attributes="0"/>
-                  <Component id="emailTextField" alignment="1" max="32767" attributes="0"/>
-                  <Component id="telefonoTextField" alignment="1" max="32767" attributes="0"/>
-                  <Component id="direccionTextField" alignment="1" max="32767" attributes="0"/>
-                  <Component id="numeroCuentaTextField" alignment="1" max="32767" attributes="0"/>
-                  <Component id="nombreTextField" alignment="1" max="32767" attributes="0"/>
-                  <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jLabel3" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jLabel6" alignment="0" max="32767" attributes="0"/>
-                  <Component id="interesMoratorioLabel" alignment="0" max="32767" attributes="0"/>
-                  <Component id="registrarButton" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabel1" min="-2" pref="129" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="ahorroRadioButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                      <Component id="inversionRadioButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="creditoRadioButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="mensajeLabel" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -72,13 +80,13 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="ahorroRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="inversionRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="creditoRadioButton" min="-2" max="-2" attributes="0"/>
+              <Component id="mensajeLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ahorroRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="inversionRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="creditoRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
@@ -233,6 +241,12 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="interesInversionTextField">
+    </Component>
+    <Component class="javax.swing.JLabel" name="mensajeLabel">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="jLabel8"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
