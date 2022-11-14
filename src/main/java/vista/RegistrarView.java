@@ -269,6 +269,15 @@ public class RegistrarView extends javax.swing.JFrame {
        boolean inversionSeleccionado = inversionRadioButton.isSelected();
        
        
+       if (creditoSeleccionado){
+           tipoDeCuenta = "CREDITO";
+       }else if ( ahorroSeleccionado){
+           tipoDeCuenta = "AHORRO";
+       }else if (inversionSeleccionado){
+           tipoDeCuenta = "INVERSION";
+       }
+       
+       
        /*
        
        Es necesario primero revisar que los datos no esten vacios y que se puedan "parsear"
@@ -277,13 +286,7 @@ public class RegistrarView extends javax.swing.JFrame {
        
        */
        
-       if (creditoSeleccionado){
-           tipoDeCuenta = "CREDITO";
-       }else if ( ahorroSeleccionado){
-           tipoDeCuenta = "AHORRO";
-       }else if (inversionSeleccionado){
-           tipoDeCuenta = "INVERSION";
-       }
+       
        
         //Revistar que no hay campos vacios
         try {
@@ -294,25 +297,81 @@ public class RegistrarView extends javax.swing.JFrame {
             //double limiteDeCreditoDouble = Double.parseDouble(limiteDeCredito);
             //mandar llamar a registrar del controlador
             
-            if(!controlador.Controlador.numeroDeCuentaRepetido(numeroCuentaInt)){
-                if(controlador.Controlador.crearCuentaDeAhorros(tipoDeCuenta, nombre,  direccion,  email,  telefono,  numeroCuentaInt,  saldoDouble)){
-                   
-                    limpiarDatosDelaVista();
-                    mensajeLabel.setText("Usuario registrado exitosamente");
-                    mensajeLabel.setForeground(Color.BLUE);
-                    MainView.dibujarUsuariosEnLaTabla();
-                    //Hace falta que se muestre una retroalimentación en la vista para que el usuario 
-                    //sepa que ya se registró la cuenta
-                }else{
-                   mensajeLabel.setText("Error al registrar");
-                   mensajeLabel.setForeground(Color.RED);
-                }
-
-            }else{
+          
+                //Tenemos que revisar si vamos a registrar o a editar
+                if (registrarButton.getText().equals("Registrar")) {
+                     
+                    if(!controlador.Controlador.numeroDeCuentaRepetido(numeroCuentaInt)){
+                        if(controlador.Controlador.crearCuentaDeAhorros(tipoDeCuenta, nombre,  direccion,  email,  telefono,  numeroCuentaInt,  saldoDouble)){
+                            limpiarDatosDelaVista();
+                            mensajeLabel.setText("Usuario registrado exitosamente");
+                            mensajeLabel.setForeground(Color.BLUE);
+                            MainView.dibujarUsuariosEnLaTabla();
+                            //Hace falta que se muestre una retroalimentación en la vista para que el usuario 
+                            //sepa que ya se registró la cuenta
+                        }else{
+                            mensajeLabel.setText("Error al registrar");
+                            mensajeLabel.setForeground(Color.RED);
+                        }
+                    }else{
                 
-               mensajeLabel.setText("Numero de cuenta repetido");
-               mensajeLabel.setForeground(Color.RED);
-            }  
+                        mensajeLabel.setText("Numero de cuenta repetido");
+                        mensajeLabel.setForeground(Color.RED);
+                     }
+                  
+
+                }else {
+                    //editar 
+                    /*
+                        Si el numero de cuenta nuevo y viejo son iguales no tengo que 
+                        buscar si el numero de cuenta ya esta ocupado
+                    */
+                    if(numeroCuentaInt == cuentaAhorro.getNumeroCuenta()){
+                        if(controlador.Controlador.editarCuentaDeAhorro(tipoDeCuenta, nombre, direccion, email, telefono, numeroCuentaInt, saldoDouble, cuentaAhorro.getNumeroCuenta())){
+                           limpiarDatosDelaVista();
+                           mensajeLabel.setText("Usuario registrado exitosamente");
+                           mensajeLabel.setForeground(Color.BLUE);
+                           MainView.dibujarUsuariosEnLaTabla();
+                           //Hace falta que se muestre una retroalimentación en la vista para que el usuario 
+                           //sepa que ya se registró la cuenta
+
+
+                        }else{
+                         mensajeLabel.setText("Error al registrar");
+                         mensajeLabel.setForeground(Color.RED);
+                       }
+                    
+                    }else{
+                       /*
+                        Como el número de cuenta viejo y nuevo no son iguales, 
+                        tengo que revisar si no está repetido el nuevo número de cuenta
+                        */
+                       
+                        if(!controlador.Controlador.numeroDeCuentaRepetido(numeroCuentaInt)){
+                            if(controlador.Controlador.editarCuentaDeAhorro(tipoDeCuenta, nombre, direccion, email, telefono, numeroCuentaInt, saldoDouble, cuentaAhorro.getNumeroCuenta())){
+                                limpiarDatosDelaVista();
+                                mensajeLabel.setText("Usuario registrado exitosamente");
+                                mensajeLabel.setForeground(Color.BLUE);
+                                MainView.dibujarUsuariosEnLaTabla();
+                                //Hace falta que se muestre una retroalimentación en la vista para que el usuario 
+                                //sepa que ya se registró la cuenta
+
+
+                            }else{
+                              mensajeLabel.setText("Error al registrar");
+                              mensajeLabel.setForeground(Color.RED);
+                            }
+                        
+                        }else{
+                
+                            mensajeLabel.setText("Numero de cuenta repetido");
+                            mensajeLabel.setForeground(Color.RED);
+                        }
+                    
+                    }
+                   
+                }
+              
         } catch (Exception e) {
             
         } 

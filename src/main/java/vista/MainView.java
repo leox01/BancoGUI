@@ -6,6 +6,7 @@
 package vista;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelo.CuentaAhorro;
@@ -22,6 +23,8 @@ public class MainView extends javax.swing.JFrame {
 
     /** Creates new form MainView */
     public MainView() {
+        controlador.Controlador.leerArchivo();
+       
         initComponents();
         
     }
@@ -48,6 +51,9 @@ public class MainView extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -84,12 +90,35 @@ public class MainView extends javax.swing.JFrame {
         });
 
         eliminarButton.setText("Eliminar");
+        eliminarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarButtonActionPerformed(evt);
+            }
+        });
 
         buscarTextField.setText("Buscar por numero de cuenta");
+        buscarTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                buscarTextFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                buscarTextFieldFocusLost(evt);
+            }
+        });
 
         buscarButton.setText("Buscar");
+        buscarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarButtonActionPerformed(evt);
+            }
+        });
 
         limpiarButton.setText("Limpiar");
+        limpiarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limpiarButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -118,12 +147,12 @@ public class MainView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(34, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buscarButton)
-                    .addComponent(buscarTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(eliminarButton)
                     .addComponent(editarButton)
                     .addComponent(registrarButton)
-                    .addComponent(limpiarButton))
+                    .addComponent(limpiarButton)
+                    .addComponent(buscarTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buscarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -184,12 +213,76 @@ public class MainView extends javax.swing.JFrame {
        actualizarBotones();
        dibujarUsuariosEnLaTabla();
        botonesDeLaVista(false);
+      
     }//GEN-LAST:event_formWindowActivated
 
     private void myTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myTableMouseClicked
        indexRow = myTable.rowAtPoint(evt.getPoint());
         botonesDeLaVista(true);
     }//GEN-LAST:event_myTableMouseClicked
+
+    private void eliminarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarButtonActionPerformed
+        
+        //Obtener el index donde el usuario dio el click 
+      
+        if(indexRow!=-1){
+            String numeroCuentaString = myTable.getValueAt(indexRow, 1).toString();
+            int numeroCuentaInt = Integer.parseInt(numeroCuentaString);
+            
+            CuentaAhorro cuentaAhorro = controlador.Controlador.buscarCuentaAhorro(numeroCuentaInt);
+
+            if(cuentaAhorro.getNumeroCuenta()!=-1){
+                //Mostrar un mensaje donde le preguntamos al usaurio si quiere eliminar o no
+                int respuesta =  JOptionPane.showConfirmDialog(this,"Mensaje", "título", 0);
+                if (respuesta == 0){
+                
+                    controlador.Controlador.eliminarCuentaDeAhorro(numeroCuentaInt);
+                    dibujarUsuariosEnLaTabla();
+                }
+              
+
+            }else{
+                System.out.println("No existe esa cuenta" + cuentaAhorro.getNumeroCuenta());
+            }
+            
+         
+        }
+        
+    }//GEN-LAST:event_eliminarButtonActionPerformed
+
+    private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
+       
+       String numeroDeCuentaBuscadoString =  buscarTextField.getText();
+        try {
+            int numeroDeCuentaBuscado = Integer.parseInt(numeroDeCuentaBuscadoString);
+            
+            
+            dibujarUsuariosBuscadosEnLaTabla(numeroDeCuentaBuscado);
+            
+        } catch (Exception e) {
+            System.out.println("No es un número de cuenta válido");
+        }
+    }//GEN-LAST:event_buscarButtonActionPerformed
+
+    private void limpiarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarButtonActionPerformed
+        buscarTextField.setText("Buscar por numero de cuenta");
+        dibujarUsuariosEnLaTabla();
+       
+    }//GEN-LAST:event_limpiarButtonActionPerformed
+
+    private void buscarTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_buscarTextFieldFocusGained
+       buscarTextField.setText("");
+    }//GEN-LAST:event_buscarTextFieldFocusGained
+
+    private void buscarTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_buscarTextFieldFocusLost
+       if(buscarTextField.getText().equals("")){
+           buscarTextField.setText("Buscar por numero de cuenta");
+       }
+    }//GEN-LAST:event_buscarTextFieldFocusLost
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        controlador.Controlador.guardarArchivo();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -267,6 +360,39 @@ public class MainView extends javax.swing.JFrame {
             tableModel.addRow(filaCuenta);
         }
         myTable = new JTable(tableModel);
+    
+    }
+    
+    public static void dibujarUsuariosBuscadosEnLaTabla(int numeroDeCuenta){
+      
+       
+        DefaultTableModel tableModel = (DefaultTableModel) myTable.getModel(); 
+        
+        tableModel.setRowCount(0); //limpiar la tabla 
+        
+        CuentaAhorro cuentaAhorro = controlador.Controlador.buscarCuentaAhorro(numeroDeCuenta);
+        
+        
+        if (cuentaAhorro.getNumeroCuenta()!= -1){
+             ArrayList<CuentaAhorro> cuentas = new ArrayList<>();
+            cuentas.add(cuentaAhorro);
+
+            for (CuentaAhorro cuenta : cuentas) {
+                Object filaCuenta[] = new Object[7];
+
+                filaCuenta[0] = cuenta.getTipoDeCuenta();
+                filaCuenta[1] = cuenta.getNumeroCuenta();
+                filaCuenta[2] = cuenta.getNombre();
+                filaCuenta[3] = cuenta.getDireccion();
+                filaCuenta[4] = cuenta.getTelefono();
+                filaCuenta[5] = cuenta.getEmail();
+                filaCuenta[6] = cuenta.getSaldo();
+                tableModel.addRow(filaCuenta);
+            }
+            myTable = new JTable(tableModel);
+        
+        }
+       
     
     }
     

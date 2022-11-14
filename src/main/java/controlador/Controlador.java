@@ -4,7 +4,12 @@
  */
 package controlador;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import modelo.CuentaAhorro;
 /**
  *
@@ -12,8 +17,10 @@ import modelo.CuentaAhorro;
  */
 public class Controlador {
     
-    
-   public static ArrayList<CuentaAhorro> cuentasAhorros = new ArrayList<>();
+    /**
+     *
+     */
+    public static ArrayList<CuentaAhorro> cuentasAhorros = new ArrayList<>();
     
     /**
      * Este método revisa que no esten repetidos los números de cuenta
@@ -98,7 +105,7 @@ public class Controlador {
      * @param viejoNumeroDeCuenta es el numero de cuenta con el que se buscó en un primer momento a la cuenta
      * @return retorna true si pudo actualizar o false cuando hay un error 
      */
-    public boolean editarCuentaDeAhorro(String nuevoTipoDeCuenta, String nuevoNombre, String nuevaDireccion, String nuevoEmail, String nuevoTelefono, int nuevoNumeroCuenta, double nuevoSaldo, int viejoNumeroDeCuenta){
+    public static boolean editarCuentaDeAhorro(String nuevoTipoDeCuenta, String nuevoNombre, String nuevaDireccion, String nuevoEmail, String nuevoTelefono, int nuevoNumeroCuenta, double nuevoSaldo, int viejoNumeroDeCuenta){
 
         for (CuentaAhorro cuentaAhorro : cuentasAhorros) {
             if(cuentaAhorro.getNumeroCuenta() == viejoNumeroDeCuenta){
@@ -125,7 +132,7 @@ public class Controlador {
      * @param numeroCuentaParaEliminar numero de cuenta con el que buscaremos en el ArrayList 
      * @return retorna true cuando si puedo eliminar al usuario y false cuando hay algún error
      */
-    public boolean eliminarCuentaDeAhorro(int numeroCuentaParaEliminar){
+    public static boolean eliminarCuentaDeAhorro(int numeroCuentaParaEliminar){
     
         for (CuentaAhorro cuentaAhorro : cuentasAhorros) {
             if(cuentaAhorro.getNumeroCuenta() == numeroCuentaParaEliminar){
@@ -139,6 +146,152 @@ public class Controlador {
         System.out.println("No existe una cuenta con ese número de cuenta");
         return false;
     }
+    
+    /**
+     * Este método intentará guardar un archivo en nuestro directorio 
+     * Si el archivo existe solo lo actualizará, si no, lo creará
+     * @return verdadero cuando pudo guardar y falso cuando no puede guardar
+     */
+    public static boolean guardarArchivo(){
+        try {
+          FileWriter myWriter = new FileWriter("cuentasDeAhorro.txt");
+          
+          
+            for (CuentaAhorro cuentasAhorro : cuentasAhorros) {
+                myWriter.write(cuentasAhorro.getNumeroCuenta()+"|");
+                myWriter.write(cuentasAhorro.getNombre()+"|");
+                myWriter.write(cuentasAhorro.getDireccion()+"|");
+                myWriter.write(cuentasAhorro.getEmail()+"|");
+                myWriter.write(cuentasAhorro.getTelefono()+"|");
+                myWriter.write(cuentasAhorro.getSaldo()+"|");
+                myWriter.write(cuentasAhorro.getTipoDeCuenta()+"\n");
+                
+            }
+         
+          
+          myWriter.close();
+          System.out.println("Successfully wrote to the file.");
+          return true;
+        } catch (IOException e) {
+          System.out.println("An error occurred.");
+          e.printStackTrace();
+          return false;
+        }
+        
+    }
+    
+    /**
+     * Intentará leer un achivo o lo creará si no existe,
+     * @return verdadero cuando pudo leer y falso cuando no puede leer
+     */
+    public static boolean leerArchivo(){
+        
+        int contadorDeCaracterEspecial = 0;
+        String numeroCuenta;
+        String nombre = "";
+        String direccion = "";
+        String email = "";
+        String telefono = "";
+        String tipoDeCuenta = "";
+        String saldo;
+        double saldoDouble =0;
+        int numeroDecuentaInt = -1;
+               
+        try {
+            File myObj = new File("cuentasDeAhorro.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+              String registro = myReader.nextLine();
+              String acumuladorCaracteres = "";
+                for (char caracter : registro.toCharArray()) {
+                    
+                    if(caracter != '|'){
+                        
+                        acumuladorCaracteres += caracter;
+                    }else{
+                        contadorDeCaracterEspecial++;
+                        switch (contadorDeCaracterEspecial) {
+                            case 1 :
+                                numeroCuenta = acumuladorCaracteres;
+                                
+                                try {
+                                    numeroDecuentaInt = Integer.parseInt(numeroCuenta);
+                                    
+                                } catch (Exception e) {
+                                    System.out.println(e);
+                                }
+                                acumuladorCaracteres = "";
+                                break;
+                            case 2 :
+                                nombre = acumuladorCaracteres;
+                                acumuladorCaracteres = "";
+                                break;
+                            case 3 :
+                                direccion = acumuladorCaracteres;
+                                acumuladorCaracteres = "";
+                                break;
+                            case 4 :
+                                email = acumuladorCaracteres;
+                                acumuladorCaracteres = "";
+                                break;
+                            case 5 :
+                                telefono = acumuladorCaracteres;
+                                acumuladorCaracteres = "";
+                                break;
+                            case 6 :
+                                saldo = acumuladorCaracteres;
+                                
+                                try {
+                                    saldoDouble = Double.parseDouble(saldo);
+                                } catch (Exception e) {
+                                    System.out.println(e);
+                                }
+                                acumuladorCaracteres = "";
+                                break;
+                            case 7 :
+                                tipoDeCuenta = acumuladorCaracteres;
+                                acumuladorCaracteres = "";
+                                break;
+                              
+                           
+                        }
+                    }
+                    
+                    
+                }
+                
+                 
+                cuentasAhorros.add(new CuentaAhorro(tipoDeCuenta, nombre, direccion, email, telefono, numeroDecuentaInt, saldoDouble));
+              
+            }
+            myReader.close();
+            return true;
+        }catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+            return false;
+        }
+        
+        
+    }
+    
+    
+    public static void crearArchivo(){
+    
+        try {
+            File myFile = new File("cuentasDeAhorro.txt");
+            if (myFile.createNewFile()) {
+              System.out.println("File created: " + myFile.getName());
+            } else {
+              System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    
+    }
+    
     
     
 }
