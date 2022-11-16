@@ -164,7 +164,7 @@ public class Controlador {
                 myWriter.write(cuentasAhorro.getEmail()+"|");
                 myWriter.write(cuentasAhorro.getTelefono()+"|");
                 myWriter.write(cuentasAhorro.getSaldo()+"|");
-                myWriter.write(cuentasAhorro.getTipoDeCuenta()+"\n");
+                myWriter.write(cuentasAhorro.getTipoDeCuenta()+"|\n");
                 
             }
          
@@ -198,9 +198,10 @@ public class Controlador {
         int numeroDecuentaInt = -1;
                
         try {
-            File myObj = new File("cuentasDeAhorro.txt");
-            Scanner myReader = new Scanner(myObj);
+            File myArchivo = new File("cuentasDeAhorro.txt");
+            Scanner myReader = new Scanner(myArchivo);
             while (myReader.hasNextLine()) {
+              contadorDeCaracterEspecial = 0;
               String registro = myReader.nextLine();
               String acumuladorCaracteres = "";
                 for (char caracter : registro.toCharArray()) {
@@ -220,23 +221,23 @@ public class Controlador {
                                 } catch (Exception e) {
                                     System.out.println(e);
                                 }
-                                acumuladorCaracteres = "";
+                               
                                 break;
                             case 2 :
                                 nombre = acumuladorCaracteres;
-                                acumuladorCaracteres = "";
+                               
                                 break;
                             case 3 :
                                 direccion = acumuladorCaracteres;
-                                acumuladorCaracteres = "";
+                                
                                 break;
                             case 4 :
                                 email = acumuladorCaracteres;
-                                acumuladorCaracteres = "";
+                                
                                 break;
                             case 5 :
                                 telefono = acumuladorCaracteres;
-                                acumuladorCaracteres = "";
+                               
                                 break;
                             case 6 :
                                 saldo = acumuladorCaracteres;
@@ -246,18 +247,17 @@ public class Controlador {
                                 } catch (Exception e) {
                                     System.out.println(e);
                                 }
-                                acumuladorCaracteres = "";
+                                
                                 break;
                             case 7 :
                                 tipoDeCuenta = acumuladorCaracteres;
-                                acumuladorCaracteres = "";
+                               
                                 break;
                               
                            
                         }
+                         acumuladorCaracteres = "";
                     }
-                    
-                    
                 }
                 
                  

@@ -1,2 +1,2 @@
-1|1|1|1|1|1.0|
-1|1|1|1|1|1.0|2
+123|Leo|Calle 123|leo01morales@gmail.com|33166009516|100.0|AHORRO|
+30|Veronica|Calle 123|vero@gmail.com|3344556677|8000.0|AHORRO|

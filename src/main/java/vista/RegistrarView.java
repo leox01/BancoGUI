@@ -373,7 +373,7 @@ public class RegistrarView extends javax.swing.JFrame {
                 }
               
         } catch (Exception e) {
-            
+            System.out.println(e);
         } 
     }//GEN-LAST:event_registrarButtonActionPerformed
 
